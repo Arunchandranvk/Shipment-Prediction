@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .forms import SignUpForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+
+
+
 
 
 def sign_up(request):
@@ -26,5 +31,22 @@ def sign_up(request):
     return render(request, 'Auth/sign_up.html', {'form': form})
 
 
+# def sign_in(request):
+#     return render(request,'Auth/sign_in.html')
+
+
+
 def sign_in(request):
-    return render(request,'Auth/sign_in.html')
+    if request.method == "POST":
+        username = request.POST.get('u')
+        password = request.POST.get('p')
+        user = authenticate(request, username=username, password=password)
+
+        if user:
+            login(request, user)
+            return redirect('home:services')  # Redirect to the 'packages' page
+        else:
+            messages.error(request, "Invalid credentials")
+            return render(request, 'Auth/sign_in.html')  # Render the login page with error message
+    else:
+        return render(request, 'Auth/sign_in.html')  # Render the login page for GET requests
