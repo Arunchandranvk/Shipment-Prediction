@@ -42,3 +42,78 @@
 .btn-submit:hover {
     background-color: #0056b3;
 }
+
+
+
+
+
+
+/* CSS for login form */
+.login-form-container {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 400px; /* Adjust width as needed */
+    margin: 0 auto; /* Center the form horizontally */
+}
+
+.login-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form-group {
+    margin-bottom: 15px;
+}
+
+.login-label {
+    font-weight: bold;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.hide-eye {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+.login-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
+}
+
+.login-link {
+    color: black;
+    text-decoration: none;
+}
+
+.login-message {
+    margin-top: 20px;
+}
+
+/* Additional styling for responsive design */
+@media (max-width: 768px) {
+    .login-form-container {
+        width: 90%;
+    }
+}

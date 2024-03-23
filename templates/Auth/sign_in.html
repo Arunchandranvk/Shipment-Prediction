@@ -1,12 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 
-<h1>thi is sign in</h1>
+<style>
+    .hide-eye {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 1; /* Ensure the icon is above the input field */
+}
+
+.fa-eye, .fa-eye-slash {
+    color: #999; /* Set the color of the eye icon */
+}
+
+
+</style>
+
+<body>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-e4b8wv1IdUJ+Vok2r2H/FUhVxUOV94/R5poIjkvEV3ytYApO1re0ld2Xeqy+/R03L/T6Yx+JvzPEdjo4Isp91Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 <div class="login-form-container">
@@ -52,6 +68,25 @@
     </form>
 </div>
 
+    <script>
+   document.getElementById('togglePassword').addEventListener('click', function () {
+    var passwordInput = document.getElementById('password');
+    var eyeIcon = document.getElementById('togglePassword').querySelector('i');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+    }
+});
+
+</script>
 
 </body>
 </html>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .forms import SignUpForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 
 
@@ -50,3 +50,8 @@ def sign_in(request):
             return render(request, 'Auth/sign_in.html')  # Render the login page with error message
     else:
         return render(request, 'Auth/sign_in.html')  # Render the login page for GET requests
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('UserAuth:sign_in')  # Redirect to the sign-in page
