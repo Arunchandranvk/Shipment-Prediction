@@ -87,5 +87,50 @@
             </div>
         </div>
     </div>
+
+
+<div>
+
+<div>
+    <form id="userInputForm" method="POST" class="contact-form text-right">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="common-input mb-20 form-control" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="common-input mb-20 form-control" required>
+
+                <label for="product_type">Product Category:</label>
+                <input type="text" name="product_type" class="common-input mb-20 form-control" required>
+
+                <label for="departure">Departure City:</label>
+                <select id="departure" name="departure" class="common-input mb-20 form-control" required>
+                    {% for city in departure_cities %}
+                    <option value="{{ city.id }}">{{ city.city_name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="delivery">Delivery City:</label>
+                <select id="delivery" name="delivery" class="common-input mb-20 form-control" required>
+                    {% for city in delivery_cities %}
+                    <option value="{{ city.id }}">{{ city.city_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="primary-btn mt-20">Submit</button>
+        <div class="alert-msg"></div>
+    </form>
+</div>
+
+
+
+
+
+</div>
+
+
     <!-- Estimate_area end  -->
 {% endblock %}
