@@ -44,7 +44,7 @@ def sign_in(request):
 
         if user:
             login(request, user)
-            return redirect('home:services')  # Redirect to the 'packages' page
+            return redirect('home:home')  # Redirect to the 'packages' page
         else:
             messages.error(request, "Invalid credentials")
             return render(request, 'sign_in.html')  # Render the login page with error message

@@ -1,0 +1,41 @@
+{% extends "home.html" %}
+{% block home %}
+{% load static %}
+
+<div class="Estimate_area overlay">
+    <div class="container">
+        <h1 class="text-center text-white" style=" letter-spacing: 1px;font-family:'Times New Roman', Times, serif;font-weight: bold;">Feedback</h1>
+
+        <div class="row text-center " style="margin-left: 250px;">
+
+            <div class="col-xl-8 col-lg-8 col-md-7">
+                <div class="form">
+                    <form method="POST" >
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="input_field">
+                                    <input type="text" id="name" name="name" class="common-input mb-20 form-control" placeholder="Name" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="input_field">
+                                    <textarea name="message" class="common-input mb-20 form-control" id="" cols="30" rows="10">Message</textarea>
+                                </div>
+                            </div>
+                         
+                            <div class="col-xl-12">
+                                <div class="input_field">
+                                    <button class="boxed-btn3-line" type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

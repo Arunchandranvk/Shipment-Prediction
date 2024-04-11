@@ -22,6 +22,9 @@ app_name='home'
 urlpatterns = [
     path('home',views.home,name="home"),
     path('service',views.services,name="services"),
-
+    path('shipment/',views.MyShipment.as_view(),name="ship"),
+    path('feed/',views.FeedCreateView,name="feed"),
+    path('predict/<int:pk>/',views.predict,name="p"),
+    path('update_days/<int:pk>/', views.update_days, name='update_days'),
 
 ]
