@@ -28,7 +28,7 @@ def sign_up(request):
             return redirect('UserAuth:sign_in')
     else:
         form = SignUpForm()
-    return render(request, 'Auth/sign_up.html', {'form': form})
+    return render(request, 'sign_up.html', {'form': form})
 
 
 # def sign_in(request):
@@ -47,9 +47,9 @@ def sign_in(request):
             return redirect('home:services')  # Redirect to the 'packages' page
         else:
             messages.error(request, "Invalid credentials")
-            return render(request, 'Auth/sign_in.html')  # Render the login page with error message
+            return render(request, 'sign_in.html')  # Render the login page with error message
     else:
-        return render(request, 'Auth/sign_in.html')  # Render the login page for GET requests
+        return render(request, 'sign_in.html')  # Render the login page for GET requests
 
 
 def user_logout(request):

@@ -1,5 +1,5 @@
-<!doctype html>
-{% load static %}
+<!Doctype html>
+
 <html class="no-js" lang="zxx">
 
 <head>
@@ -8,7 +8,7 @@
     <title>Logistico</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+{% load static %}
     <!-- <link rel="manifest" href="site.webmanifest"> -->
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}">
     <!-- Place favicon.ico in the root directory -->
@@ -105,7 +105,7 @@
                                             </li>
                                             <li><a href="contact.html">Contact</a></li>
 
-                                             <li><a href="{% url 'UserAuth:logout' %}">Logout</a></li>
+                                             {% comment %} <li><a href="{% url 'UserAuth:logout' %}">Logout</a></li> {% endcomment %}
                                             <li><a href="{% url 'UserAuth:sign_up' %}">Sign Up</a></li>
                                             <li><a href="{% url 'UserAuth:sign_in' %}">Sign in</a></li>
                                         </ul>
