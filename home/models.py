@@ -64,7 +64,7 @@ class UserInput(models.Model):
         ('Delivered', 'Delivered'),
     )
     status = models.CharField(max_length=20,choices=STATUS_CHOICES,default='Order Confirmed')
-
+    order_no=models.CharField(max_length=100,null=True)
     def save(self, *args, **kwargs):
         # Set weather_conditions randomly
         self.weather_conditions = random.choice([choice[0] for choice in self.WEATHER_CHOICES])

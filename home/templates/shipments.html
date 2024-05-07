@@ -5,7 +5,7 @@
 <h1 class="text-center text-white" style=" letter-spacing: 1px;font-family:'Times New Roman', Times, serif;font-weight: bold;">My Shipments</h1>
 <div class="row" style="width: 100%;">
     {% for i in data %}
-    <div class="col-lg-3  "  >
+    <div class="col-lg-3  mt-3 mb-5"  >
       <div class="card  ml-3 mb-2" style="height: 450px;">         
         <div class="card card-body">
         <a href="{% url 'home:track_shipment' i.id %}" style="text-decoration: none;">

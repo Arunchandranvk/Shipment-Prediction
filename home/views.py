@@ -54,10 +54,10 @@ class MyShipment(TemplateView):
         for user_input in user_inputs:
             try:
                 current_time = timezone.now()
-                print("Current Time:", current_time)
-                print(user_input.date)
+                # print("Current Time:", current_time)
+                # print(user_input.date)
                 difference =  current_time - user_input.date
-                print('diff',difference.days)
+                # print('diff',difference.days)
                 
                 prediction = round(float(user_input.prediction))
                 
@@ -66,7 +66,7 @@ class MyShipment(TemplateView):
                 user_input.prediction = a
                 
                 expected_delivery_date = user_input.date + timedelta(days=prediction)
-                print(expected_delivery_date)
+                # print(expected_delivery_date)
                 user_input.expected_date=expected_delivery_date
                 user_input.save()
             except:
@@ -159,7 +159,17 @@ def services(request):
         delivery_cities = Delivery.objects.all()
         return render(request, 'services.html',{'departure_cities': departure_cities, 'delivery_cities': delivery_cities})
 
+import random
+import string
 
+def generate_order_number(length=8):
+    # Define the characters to use for generating the order number
+    characters = string.ascii_uppercase + string.digits
+    
+    # Generate a random order number by shuffling the characters
+    order_number = ''.join(random.choices(characters, k=length))
+    
+    return order_number
 
 model, scaler = train_model()
 
@@ -177,15 +187,20 @@ def predict(request, **kwargs):
         data.festival
     ]
     prediction = make_prediction(model, scaler, input_data)
-
+    if prediction>15:
+           prediction=prediction-13
+    
     feed =Predict(prediction = prediction[0],user=data.user.id,shipment=id)
     feed.save()
     print(prediction)
     obj = get_object_or_404(UserInput, pk=data.id)
+    
 
+    order_number = generate_order_number()
+    print("Generated Order Number:", order_number)
     # Predict the value
     # predicted_value = predict_value()
-
+    obj.order_no=order_number
     obj.prediction = prediction[0]
 
     # Save the object
