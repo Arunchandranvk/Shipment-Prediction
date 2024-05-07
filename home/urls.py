@@ -26,5 +26,5 @@ urlpatterns = [
     path('feed/',views.FeedCreateView,name="feed"),
     path('predict/<int:pk>/',views.predict,name="p"),
     path('update_days/<int:pk>/', views.update_days, name='update_days'),
-
-]
+    path('track_shipments/<int:pk>/', views.track_shipments, name='track_shipment'),
+] 

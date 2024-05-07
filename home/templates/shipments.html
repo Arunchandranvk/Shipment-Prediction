@@ -5,15 +5,14 @@
 <h1 class="text-center text-white" style=" letter-spacing: 1px;font-family:'Times New Roman', Times, serif;font-weight: bold;">My Shipments</h1>
 <div class="row" style="width: 100%;">
     {% for i in data %}
-    <div class="col-lg-3 " >
-      <div class="card mt-2 ml-1">         
+    <div class="col-lg-3  "  >
+      <div class="card  ml-3 mb-2" style="height: 450px;">         
         <div class="card card-body">
+        <a href="{% url 'home:track_shipment' i.id %}" style="text-decoration: none;">
           <h4 class="card-title text-center">{{i.name}}</h4>
-          {% if i.img  %}
-            <img src="{{ i.img.url }}" class="card-img-top " alt="..." height="200px" width="250px">
-          {% else %}
-            <img src="{% static 'images/ship.png' %}" class="card-img-top" alt="..." height="200px" width="250px">
-          {% endif %}
+          
+            <img src="{% static 'images/ship.png' %}" class="card-img-top" alt="..." height="120px" style="width:270px;margin-left: 15px;">
+        
           <h5 class="card-title text-center">{{i.email}}</h5>
         <div >
           <ul class="list-group list-group-flush">
@@ -21,46 +20,15 @@
             <li class="list-group-item">Product Type: {{i.product_type}}</li>
             <li class="list-group-item">Departure: {{i.departure}}</li>
             <li class="list-group-item">Delivery: {{i.delivery}}</li> 
-            <li class="list-group-item" >Days Left:
-                {% if i.prediction %}
-                    <span class="btn btn-outline-info btn-block" id="daysLeft{{ forloop.counter }}">{{i.prediction|floatformat:"0" }}</span>
-                    <script>
-                        // Function to decrement days and update the display
-                        function decrementDays{{ forloop.counter }}() {
-                            var daysLeftElement = document.getElementById('daysLeft{{ forloop.counter }}');
-                            var daysLeft = parseInt(daysLeftElement.textContent);
-
-                            // Decrement the value
-                            daysLeft--;
-
-                            // Update the display
-                            daysLeftElement.textContent = daysLeft;
-
-                            // Send an AJAX request to update the value in the database
-                            var xhr = new XMLHttpRequest();
-                            xhr.open('POST', '{% url "home:update_days" i.id %}', true);
-                            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                            xhr.setRequestHeader('X-CSRFToken', csrftoken);
-                            xhr.onreadystatechange = function () {
-                                if (xhr.readyState === XMLHttpRequest.DONE) {
-                                    if (xhr.status === 200) {
-                                        var response = JSON.parse(xhr.responseText);
-                                        if (!response.success) {
-                                            console.error('Failed to update days in the database.');
-                                        }
-                                    } else {
-                                        console.error('Error occurred while updating days in the database.');
-                                    }
-                                }
-                            };
-                            xhr.send('daysLeft=' + encodeURIComponent(daysLeft));
-                        }
-
-                        // Call decrementDays function when the page loads (optional)
-                        window.onload = function() {
-                            decrementDays{{ forloop.counter }}();
-                        };
-                    </script>
+            <li class="list-group-item">Date: {{i.date}}</li> 
+            
+                {% if i.prediction  %}
+                  {% if i.prediction <= 0 %}
+                        <h3 class="text-center bg-success mt-4" style="border-radius:0.75rem;color:white;padding:5px;">Delivered</h3>
+                        {% else %}
+                        <li class="list-group-item" >Days Left:
+                    <p class="btn btn-outline-info btn-block" id="daysLeft{{ forloop.counter }}">{{i.prediction|floatformat:"0" }}</p>
+                    {% endif %}
                 {% else %}
                     <a class="btn btn-info" href="{% url 'home:p' i.id %}">Predict</a>
                 {% endif %}
@@ -68,6 +36,7 @@
 
           </ul>
           </div>
+        </a>
         </div>         
         </div>
         </div>  

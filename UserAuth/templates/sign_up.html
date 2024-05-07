@@ -1,38 +1,38 @@
-<!DOCTYPE html>
+
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
 
-<head>
-<body>
 
+<div class="text-center" >
     <form method="post" class="signup-form">
         {% csrf_token %}
         {{ form.non_field_errors }}
         <h2>Sign Up</h2>
-        <div class="form-group">
+        <div class="form-group" class="form-control ">
             {{ form.username.label_tag }}
             {{ form.username }}
             {{ form.username.errors }}
-        </div>
-        <div class="form-group">
-            {{ form.password.label_tag }}
-            {{ form.password }}
-            {{ form.password.errors }}
-        </div>
-        <div class="form-group">
-            {{ form.confirm_password.label_tag }}
-            {{ form.confirm_password }}
-            {{ form.confirm_password.errors }}
         </div>
         <div class="form-group">
             {{ form.email.label_tag }}
             {{ form.email }}
             {{ form.email.errors }}
         </div>
-        <button type="submit" class="btn-submit">Sign Up</button>
+        <div class="form-group">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            {{ form.password.errors }}
+        </div>
+      
+        <div class="form-group">
+            {{ form.confirm_password.label_tag }}
+            {{ form.confirm_password }}
+            {{ form.confirm_password.errors }}
+        </div>
+        
+        <button type="submit" class="btn-submit btn btn-info">Sign Up</button>
     </form>
-</body>
-</head>
-</html>
+</div>
+
 {% endblock %}

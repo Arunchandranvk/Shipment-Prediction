@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
@@ -17,34 +17,50 @@
 .fa-eye, .fa-eye-slash {
     color: #999; /* Set the color of the eye icon */
 }
-
+.button {
+    background-color: transparent;
+    border: none;
+    color: #4CAF50; /* Green */
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 50%; /* Rounded shape for circle button */
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #f2f2f2; /* Light gray */
+  }
+  
 
 </style>
 
-<body>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-e4b8wv1IdUJ+Vok2r2H/FUhVxUOV94/R5poIjkvEV3ytYApO1re0ld2Xeqy+/R03L/T6Yx+JvzPEdjo4Isp91Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-<div class="login-form-container">
+<div class="login-form-container text-center" style="margin-top:100px;">
     <form method="POST" class="login-form" data-aos="zoom-in">
         <h3 class="login-title">Login Here</h3>
         {% csrf_token %}
 
         <div class="login-form-group">
             <label class="login-label"><strong>Username</strong></label>
-            <input type="text" class="login-input" name="u" placeholder="Enter username">
+            <input class="form-control " type="text" class="login-input" name="u" placeholder="Enter username" style="width:360px;margin-left:38%;">
         </div>
 
         <div class="login-form-group">
             <label style="position: relative; width: 360px;"><strong>Password</strong>
-                <input type="password" class="login-input" id="password" name="p" placeholder="Enter password">
-                <button type="button" id="togglePassword" onclick="togglePasswordVisibility('password')" class="hide-eye" style="position: absolute; top: 70%; right: 20px; transform: translateY(-50%); background: none; border: none;"><i class="fas fa-eye" style="color: #999;"></i></button>
+                <input class="form-control" type="password" class="login-input" id="password" name="p" placeholder="Enter password">
+                <button  type="button" id="togglePassword" onclick="togglePasswordVisibility('password')" class="hide-eye" style="position: absolute; top: 70%; right: 20px; transform: translateY(-50%); background: none; border: none;"><i class="fas fa-eye" style="color: #999;"></i></button>
             </label>
         </div>
 
         <div class="login-form-group">
             <center>
-                <input type="submit" class="login-btn" value="Login">
+                <input class="btn btn-info mt-3 mb-3" type="submit" class="login-btn" value="Login">
             </center>
         </div>
 
@@ -86,7 +102,6 @@
 
 </script>
 
-</body>
-</html>
+
 
 {% endblock %}

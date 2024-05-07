@@ -424,7 +424,7 @@ header .header_container .bottom_fixed .bottom_container ul li a {
 #testimonials .swiper2 {
   width: 1140px;
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: 50px;
   overflow: hidden;
 }
 @media screen and (max-width: 1141px) {
@@ -446,7 +446,7 @@ header .header_container .bottom_fixed .bottom_container ul li a {
 }
 #testimonials .swiper2 .swiper-slide p {
   font-size: 14px;
-  color: #666666;
+  color: white;
   margin: 15px 0 40px;
 }
 #testimonials .swiper2 .swiper-slide img {

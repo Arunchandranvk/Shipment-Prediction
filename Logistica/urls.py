@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from UserAuth.views import custom_logout
+
+admin.site.logout = custom_logout
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls,name="admin"),
     path('home',include('home.urls')),
     path('',include('UserAuth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

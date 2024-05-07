@@ -7,7 +7,6 @@ from django.contrib import messages
 
 
 
-
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -55,3 +54,12 @@ def sign_in(request):
 def user_logout(request):
     logout(request)
     return redirect('UserAuth:sign_in')  # Redirect to the sign-in page
+
+
+from django.shortcuts import redirect
+from django.contrib.auth import logout as auth_logout
+
+def custom_logout(request):
+    # Add any custom logout logic here
+    auth_logout(request)
+    return redirect('UserAuth:sign_in')

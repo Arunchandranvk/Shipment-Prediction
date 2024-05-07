@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import Departure, Delivery
 from django.views.generic import TemplateView,CreateView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from .utils import train_model, make_prediction
+
 
 
 # class FeedCreateView(CreateView):
@@ -36,16 +39,42 @@ def FeedCreateView(request):
         return render(request, 'feedback.html')
     return render(request,'feedback.html')
 
+from datetime import timedelta
+from django.utils import timezone
 
 class MyShipment(TemplateView):
     template_name="shipments.html"
     def get_context_data(self, **kwargs):
-        context= super().get_context_data(**kwargs)     
-        context["data"]=UserInput.objects.filter(user=self.request.user.id)
-        context["ship"]=Predict.objects.filter(user=self.request.user.id)
+        context = super().get_context_data(**kwargs)
+        
+        # Fetch UserInput objects for the current user
+        user_inputs = UserInput.objects.filter(user=self.request.user.id)
+        print(user_inputs)
+        # Calculate difference in days for each UserInput object
+        for user_input in user_inputs:
+            try:
+                current_time = timezone.now()
+                print("Current Time:", current_time)
+                print(user_input.date)
+                difference =  current_time - user_input.date
+                print('diff',difference.days)
+                
+                prediction = round(float(user_input.prediction))
+                
+                # print(prediction)
+                a =prediction - int(difference.days) 
+                user_input.prediction = a
+                
+                expected_delivery_date = user_input.date + timedelta(days=prediction)
+                print(expected_delivery_date)
+                user_input.expected_date=expected_delivery_date
+                user_input.save()
+            except:
+                print("Prediction does not exist")
+        context["data"] = user_inputs
+        context["ship"] = Predict.objects.filter(user=self.request.user.id)
         return context
-    
-from django.http import JsonResponse
+
 
 def update_days(request,**kwargs):
     if request.method == 'POST':
@@ -62,45 +91,38 @@ def update_days(request,**kwargs):
     else:
         return JsonResponse({'success': False})
 
+
 # Create your views here.
 def home(request):
     user = request.user
+    print(user)
     if request.method == "POST":
         name = request.POST.get('name')
         email = request.POST.get('email')
         product_type = request.POST.get('product_type')
         departure_id = request.POST.get('departure')
         delivery_id = request.POST.get('delivery')
-        img = request.POST.get('img')
-
-        # Retrieve Departure and Delivery objects
+       
         departure_city = Departure.objects.get(pk=departure_id)
         delivery_city = Delivery.objects.get(pk=delivery_id)
         feed=Feedback.objects.all()
 
-        # Create UserInput instance
         user_input = UserInput.objects.create(
             user=user,
             name=name,
             email=email,
             product_type=product_type,
             departure=departure_city,
-            delivery=delivery_city,
-            img=img,
-           
+            delivery=delivery_city,   
         )
         user_input.save()
 
-        # Redirect to a success page or render another template
-        return redirect('home:home')  # You need to define the URL name for the success page in your urlpatterns
-
+        return redirect('home:ship')  
     else:
         departure_cities = Departure.objects.all()
         delivery_cities = Delivery.objects.all()
         feed = Feedback.objects.all()
-        return render(request, 'home.html',
-                      {'departure_cities': departure_cities, 'delivery_cities': delivery_cities,'feed':feed})
-    # return render(request,'home.html')
+        return render(request, 'home.html',{'departure_cities': departure_cities, 'delivery_cities': delivery_cities,'feed':feed,'user':user})
 
 
 # def services(request):
@@ -109,9 +131,6 @@ def home(request):
 #     return render(request, 'services.html',
 #                   {'departure_cities': departure_cities, 'delivery_cities': delivery_cities})
 
-
-from django.shortcuts import render, redirect
-from .models import Departure, Delivery, UserInput
 
 def services(request):
     user = request.user
@@ -122,11 +141,9 @@ def services(request):
         departure_id = request.POST.get('departure')
         delivery_id = request.POST.get('delivery')
 
-        # Retrieve Departure and Delivery objects
         departure_city = Departure.objects.get(pk=departure_id)
         delivery_city = Delivery.objects.get(pk=delivery_id)
 
-        # Create UserInput instance
         user_input = UserInput.objects.create(
             user=user,
             name=name,
@@ -136,26 +153,14 @@ def services(request):
             delivery=delivery_city
         )
         user_input.save()
-
-        # Redirect to a success page or render another template
-        return redirect('home:home')  # You need to define the URL name for the success page in your urlpatterns
-
+        return redirect('home:home')     
     else:
         departure_cities = Departure.objects.all()
         delivery_cities = Delivery.objects.all()
-        return render(request, 'services.html',
-                      {'departure_cities': departure_cities, 'delivery_cities': delivery_cities})
+        return render(request, 'services.html',{'departure_cities': departure_cities, 'delivery_cities': delivery_cities})
 
 
 
-
-
-
-from django.shortcuts import render, redirect,get_object_or_404
-from django.http import JsonResponse
-from .utils import train_model, make_prediction
-
-# Train the model and save it as a global variable
 model, scaler = train_model()
 
 def predict(request, **kwargs):
@@ -181,15 +186,46 @@ def predict(request, **kwargs):
     # Predict the value
     # predicted_value = predict_value()
 
-    # Add the predicted value to the corresponding row
-    pred=prediction-18
-    obj.prediction = pred[0]
+    obj.prediction = prediction[0]
 
     # Save the object
     obj.save()
 
-    return redirect('home:home')
+    return redirect('home:ship')
     # elif request.method == "GET":
     #     # Handle GET requests here, render a template or return a redirect
     #     return redirect('home:home')  # Redirect to some other view or URL
+
+from django.http import HttpResponse
+
+def track_shipments(request, **kwargs):
+    # if request.method == 'POST':
+        # try:
+            id = kwargs.get('pk')
+            
+            print(id)
+            shipments = UserInput.objects.get(id=id)
+            print(shipments)
+            days = Predict.objects.get(shipment=id)
+            total = int(round(float(days.prediction))) / 4
+            
+            if shipments.prediction == total * 4:
+                shipments.status = 'Order Confirmed'
+            elif shipments.prediction == total * 3:
+                shipments.status = 'Processing'
+            elif shipments.prediction == total * 2:
+                shipments.status = 'Shipped'
+            elif shipments.prediction == total:
+                shipments.status == 'Out for delivery'
+            elif shipments.prediction == 0:
+                shipments.status = 'Delivered'
+                
+            shipments.save()
+            return render(request, 'tracking.html', {'shipments': shipments})
+        
+    #     except (UserInput.DoesNotExist, Predict.DoesNotExist) as e:
+    #         return HttpResponse("Shipment or Prediction not found.")
+    
+    # return render(request, 'tracking.html')
+
 

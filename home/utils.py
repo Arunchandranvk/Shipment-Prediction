@@ -7,7 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.ensemble import RandomForestRegressor
 
 def train_model():
-    df = pd.read_csv("D:\Shipmet\ML\eshipment.csv")
+    df = pd.read_csv("D:/ChatBot/Main Project/ML/eshipment.csv")
     # Dropping unwanted columns
     df.drop(["Time_Order_picked","Type_of_vehicle","Road_traffic_density","Vehicle_condition"], axis=1, inplace=True)
     # Label encoding
